@@ -1,5 +1,7 @@
 import random 
 import os
+import Models
+import time
 
 #SOURCE FOR THE CODE: https://github.com/Aprataksh/Minesweeper
 
@@ -190,6 +192,9 @@ def show_mines():
  
  
 if __name__ == "__main__":
+
+    automated = False
+    turns = 0
  
     # Size of grid
     n = 8
@@ -211,6 +216,15 @@ if __name__ == "__main__":
  
     # Display the instructions
     instructions()
+
+    #ask about activating automatic mode:
+    while True:
+        mode = input("Would you like to activate automatic mode? Please type 0 or 1: ")
+
+        if int(mode) == 1 or int(mode) == 0:
+            if int(mode) == 1:
+                automated = True
+            break
  
     # Variable for maintaining Game Loop
     over = False
@@ -220,7 +234,13 @@ if __name__ == "__main__":
         print_mines_layout()
  
         # Input from the user
-        inp = input("Enter row number followed by space and column number = ").split()
+        if not automated:
+            inp = input("Enter row number followed by space and column number = ").split()
+        
+        else:
+            inp = Models.decision(turns)
+            print("This is the input: ", inp)
+            time.sleep(1)
          
         # Standard input
         if len(inp) == 2:
@@ -339,3 +359,5 @@ if __name__ == "__main__":
             over = True
             continue
         clear()
+
+        turns += 1
