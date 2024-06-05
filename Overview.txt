@@ -1,0 +1,8 @@
+- make/get minesweeper
+- automate turn
+- automate decision
+	- get state of board
+	- use rules or model for decision
+	- make decision
+
+- model ideas: RNN, maybe HMM, brute force, maybe hill climbing or A*?
