@@ -37,7 +37,18 @@ def sample_next_word_after_sequence(word_sequence, alpha = 0):
     return weighted_choice(data_distinct, likelihoods.toarray())
 
 
+def stochastic_chain(seed, chain_length = 30, seed_length= 2):
+    current_words = seed.split(" ")
+    if len(current_words) != seed_length:
+        raise ValueError(f"wrong number of words, expected {seed_length}")
+    sentence = seed
 
+    for _ in range(chain_length):
+        sentence += " "
+        next_word = sample_next_word_after_sequence(" ".join(current_words))
+        sentence += next_word
+        current_words = current_words[1:]+[next_word]
+    return sentence
 
 
 if __name__ == "__main__":
@@ -99,7 +110,7 @@ if __name__ == "__main__":
     next_after_k_words_matrix = dok_matrix((sets_count, len(data_distinct)))
 
     distinct_set_of_k_words = list(set(sets_of_k_words))
-    k_words_idx_dict = {word:i for i, word in enumerate(distinct_sets_of_k_words)}
+    k_words_idx_dict = {word:i for i, word in enumerate(distinct_set_of_k_words)}
 
     for i, word in enumerate(sets_of_k_words[:-k]):
         word_sequence_idx = k_words_idx_dict[word]
@@ -107,5 +118,12 @@ if __name__ == "__main__":
         next_after_k_words_matrix[word_sequence_idx, next_word_idx] +=1
     
     #create predictions
+
+    test = input("which sentence qould zou like to start? - ")
+
+    output= stochastic_chain(test)
+    print(output)
+
+
 
     
